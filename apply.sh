@@ -4,11 +4,11 @@
 #
 cd 01_infra
 terraform init
-terrafom apply -auto-approve
+terraform apply -auto-approve
 cd -
 #
 cd 02_avi_username
 terraform init
-terrafom apply -auto-approve -var-file==inputs.json
+terraform apply -auto-approve -var-file=inputs.json
 cd -
 #
