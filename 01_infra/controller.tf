@@ -150,50 +150,60 @@ resource "null_resource" "wait_https_controller_static_standalone" {
   }
 }
 
+resource "local_file" "output_json_file_02_avi_config" {
+  content     = "{\"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_current_password\": ${jsonencode(var.avi_current_password)}, \"avi_password\": ${jsonencode(var.avi_password)}}"
+  filename = "../02_avi_username/avi_config.json"
+}
+
+resource "local_file" "output_json_file_03_avi_config" {
+  content     = "{\"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_cluster\": ${jsonencode(var.avi_cluster)}, \"deployment_id\": ${jsonencode(random_string.id.result)}, \"avi_dns_servers\": ${jsonencode(var.avi_dns_servers)}, \"avi_ntp_servers\": ${jsonencode(var.avi_ntp_servers)}}"
+  filename = "../03_avi_config/avi_config.json"
+}
+
 resource "local_file" "output_json_file_02_dhcp_cluster" {
   count            = (var.dhcp == true && var.avi_cluster== true ? 1 : 0)
-  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_dhcp_cluster.*.default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_current_password\": ${jsonencode(var.avi_current_password)}}"
-  filename = "../02_avi_username/inputs.json"
+  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_dhcp_cluster.*.default_ip_address)}}"
+  filename = "../02_avi_username/controllers.json"
 }
 
 resource "local_file" "output_json_file_03_dhcp_cluster" {
   count            = (var.dhcp == true && var.avi_cluster== true ? 1 : 0)
-  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_dhcp_cluster.*.default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_cluster\": ${jsonencode(var.avi_cluster)}, \"deployment_id\": ${jsonencode(random_string.id.result)}}"
-  filename = "../03_avi_config/inputs.json"
+  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_dhcp_cluster.*.default_ip_address)}}"
+  filename = "../03_avi_config/controllers.json"
 }
 
 resource "local_file" "output_json_file_02_dhcp_standalone" {
   count            = (var.dhcp == true && var.avi_cluster== false ? 1 : 0)
-  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_dhcp_standalone.*.default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_current_password\": ${jsonencode(var.avi_current_password)}}"
-  filename = "../02_avi_username/inputs.json"
+  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_dhcp_standalone.*.default_ip_address)}}"
+  filename = "../02_avi_username/controllers.json"
 }
 
 resource "local_file" "output_json_file_03_dhcp_standalone" {
   count            = (var.dhcp == true && var.avi_cluster== false ? 1 : 0)
-  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_dhcp_standalone.*.default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_cluster\": ${jsonencode(var.avi_cluster)}, \"deployment_id\": ${jsonencode(random_string.id.result)}}"
-  filename = "../03_avi_config/inputs.json"
+  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_dhcp_standalone.*.default_ip_address)}}"
+  filename = "../03_avi_config/controllers.json"
 }
 
 resource "local_file" "output_json_file_02_static_cluster" {
   count            = (var.dhcp == false && var.avi_cluster== true ? 1 : 0)
-  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_static_cluster.*.default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_current_password\": ${jsonencode(var.avi_current_password)}}"
-  filename = "../02_avi_username/inputs.json"
+  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_static_cluster.*.default_ip_address)}}"
+  filename = "../02_avi_username/controllers.json"
 }
 
 resource "local_file" "output_json_file_03_static_cluster" {
   count            = (var.dhcp == false && var.avi_cluster== true ? 1 : 0)
-  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_static_cluster.*.default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_cluster\": ${jsonencode(var.avi_cluster)}, \"deployment_id\": ${jsonencode(random_string.id.result)}}"
-  filename = "../03_avi_config/inputs.json"
+  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_static_cluster.*.default_ip_address)}}"
+  filename = "../03_avi_config/controllers.json"
 }
 
 resource "local_file" "output_json_file_02_static_standalone" {
   count            = (var.dhcp == false && var.avi_cluster== false ? 1 : 0)
-  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_static_standalone.*.default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_current_password\": ${jsonencode(var.avi_current_password)}}"
-  filename = "../02_avi_username/inputs.json"
+  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_static_standalone.*.default_ip_address)}}"
+  filename = "../02_avi_username/controllers.json"
 }
 
 resource "local_file" "output_json_file_03_static_standalone" {
   count            = (var.dhcp == false && var.avi_cluster== false ? 1 : 0)
-  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_static_standalone.*.default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_cluster\": ${jsonencode(var.avi_cluster)}, \"deployment_id\": ${jsonencode(random_string.id.result)}}"
-  filename = "../03_avi_config/inputs.json"
+  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_static_standalone.*.default_ip_address)}}"
+  filename = "../03_avi_config/controllers.json"
 }

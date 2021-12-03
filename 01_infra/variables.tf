@@ -61,7 +61,7 @@ variable "avi_cluster" {
   default = true
 }
 
-variable "avi_name_servers" {
+variable "avi_dns_servers" {
     default = "10.206.8.130, 10.206.8.130, 10.206.8.131"
 }
 
