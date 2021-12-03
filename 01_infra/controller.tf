@@ -32,7 +32,12 @@ resource "null_resource" "wait_https_controller" {
   }
 }
 
-resource "local_file" "foo" {
-  content     = "{\"avi_controller_ip\": ${jsonencode(vsphere_virtual_machine.controller_dhcp[0].default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_password\": ${jsonencode(var.avi_password)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_current_password\": ${jsonencode(var.avi_current_password)}}"
+resource "local_file" "output_json_file_02" {
+  content     = "{\"avi_controller_ip\": ${jsonencode(vsphere_virtual_machine.controller_dhcp[0].default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_current_password\": ${jsonencode(var.avi_current_password)}}"
   filename = "../02_avi_username/inputs.json"
+}
+
+resource "local_file" "output_json_file_03" {
+  content     = "{\"avi_controller_ip\": ${jsonencode(vsphere_virtual_machine.controller_dhcp[0].default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}}"
+  filename = "../03_avi_config/inputs.json"
 }
