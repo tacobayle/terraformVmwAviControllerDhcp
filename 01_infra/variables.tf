@@ -41,6 +41,18 @@ variable "dhcp" {
   default = true
 }
 
+variable "avi_ip4_addresses" {
+  default = "10.206.112.55, 10.206.112.56, 10.206.112.57"
+}
+
+variable "network_mask" {
+  default = "255.255.252.0"
+}
+
+variable "gateway4" {
+  default = "10.206.112.1"
+}
+
 variable "avi_version" {
   default = "21.1.2"
 }
