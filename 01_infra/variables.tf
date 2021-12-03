@@ -37,6 +37,10 @@ variable "content_library" {
   }
 }
 
+variable "dhcp" {
+  default = true
+}
+
 variable "avi_version" {
   default = "21.1.2"
 }
