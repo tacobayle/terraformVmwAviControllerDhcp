@@ -1,6 +1,6 @@
 resource "avi_cluster" "aws_cluster" {
   count            = (var.avi_cluster== true ? 3 : 0)
-  name = var.cluster_name
+  name = "cluster_avi_tf_${var.deployment_id}"
   nodes {
     ip {
       type = "V4"

@@ -38,6 +38,6 @@ resource "local_file" "output_json_file_02" {
 }
 
 resource "local_file" "output_json_file_03" {
-  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_dhcp.*.default_ip_address)}, \"avi_controller_ip\": ${jsonencode(vsphere_virtual_machine.controller_dhcp[0].default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}}"
+  content     = "{\"avi_controller_ips\": ${jsonencode(vsphere_virtual_machine.controller_dhcp.*.default_ip_address)}, \"avi_controller_ip\": ${jsonencode(vsphere_virtual_machine.controller_dhcp[0].default_ip_address)}, \"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_cluster\": ${jsonencode(var.avi_cluster)}, \"deployment_id\": ${jsonencode(random_string.id.result)}}"
   filename = "../03_avi_config/inputs.json"
 }
