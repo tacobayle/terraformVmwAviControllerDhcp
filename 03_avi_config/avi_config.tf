@@ -24,69 +24,37 @@ resource "avi_cluster" "aws_cluster" {
   }
 }
 
+
 resource "avi_systemconfiguration" "avi_system" {
   common_criteria_mode      = false
   uuid                      = "default-uuid"
   welcome_workflow_complete = true
-  dns_configuration {
-    server_list {
-      addr = var.dns_servers[0]
-      type = "V4"
+
+  dynamic dns_configuration {
+    for_each = flatten(split(",", replace(var.avi_dns_servers, " ", "")))
+    content {
+      server_list {
+        addr = dns_configuration.value
+        type = "V4"
+      }
     }
-    server_list {
-      addr = var.dns_servers[1]
-      type = "V4"
-    }
-    server_list {
-      addr = var.dns_servers[2]
-      type = "V4"
-    }
-    search_domain = var.search_domain #"remo.local"
   }
-  email_configuration {
-    disable_tls      = var.mail_server_tls #false
-    from_email       = var.email
-    mail_server_name = var.mail_server      #"localhost"
-    mail_server_port = var.mail_server_port #25
-    smtp_type        = var.mail_type        #"SMTP_LOCAL_HOST"
-  }
-  linux_configuration {
-    motd   = ""
-    banner = var.banner
-  }
+
   global_tenant_config {
     se_in_provider_context       = true
     tenant_access_to_provider_se = true
     tenant_vrf                   = false
   }
 
-  ntp_configuration {
-    ntp_servers {
-      key_number = 1
-      server {
-        addr = var.ntp_servers[0]
-        type = "DNS"
-      }
-    }
-    ntp_servers {
-      key_number = 1
-      server {
-        addr = var.ntp_servers[1]
-        type = "DNS"
-      }
-    }
-    ntp_servers {
-      key_number = 1
-      server {
-        addr = var.ntp_servers[2]
-        type = "DNS"
-      }
-    }
-    ntp_servers {
-      key_number = 1
-      server {
-        addr = var.ntp_servers[3]
-        type = "DNS"
+  dynamic ntp_configuration {
+    for_each = flatten(split(",", replace(var.avi_ntp_servers, " ", "")))
+    content {
+      ntp_servers {
+        key_number = 1
+        server {
+          addr = ntp_configuration.value
+          type = "V4"
+        }
       }
     }
   }
@@ -95,8 +63,7 @@ resource "avi_systemconfiguration" "avi_system" {
 
 resource "avi_backupconfiguration" "backup_config" {
   name       = "Backup-Configuration"
-  tenant_ref = "admin"
-  #tenant_ref              = data.avi_tenant.default_tenant.id
+  tenant_ref = var.avi_tenant
   save_local             = true
   maximum_backups_stored = 4
   backup_passphrase      = var.avi_password
