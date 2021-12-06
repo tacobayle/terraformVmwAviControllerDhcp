@@ -14,8 +14,14 @@ resource "random_string" "avi_password_random" {
   override_special = "%$&"
 }
 
-resource "local_file" "output_passwd_file" {
+resource "local_file" "output_passwd_file_random" {
   count   = var.avi_password == null ? 1 : 0
   content     = "{\"avi_password\": ${jsonencode(random_string.avi_password_random.result)}}"
-  filename = "../03_avi_config/inputs.json"
+  filename = "../03_avi_config/password.json"
+}
+
+resource "local_file" "output_passwd_file_static" {
+  count   = var.avi_password == null ? 0 : 1
+  content     = "{\"avi_password\": ${jsonencode(var.avi_password)}}"
+  filename = "../03_avi_config/password.json"
 }
