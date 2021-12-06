@@ -11,17 +11,17 @@ resource "random_string" "avi_password_random" {
   min_upper        = 2
   min_numeric      = 2
   min_special      = 2
-  override_special = "%$&"
+  override_special = "%_&"
 }
 
 resource "local_file" "output_passwd_file_random" {
   count   = var.avi_password == null ? 1 : 0
   content     = "{\"avi_password\": ${jsonencode(random_string.avi_password_random.result)}}"
-  filename = "../03_avi_config/password.json"
+  filename = "../.password.json"
 }
 
 resource "local_file" "output_passwd_file_static" {
   count   = var.avi_password == null ? 0 : 1
   content     = "{\"avi_password\": ${jsonencode(var.avi_password)}}"
-  filename = "../03_avi_config/password.json"
+  filename = "../.password.json"
 }
