@@ -151,7 +151,7 @@ resource "null_resource" "wait_https_controller_static_standalone" {
 }
 
 resource "local_file" "output_json_file_avi_config" {
-  content     = "{\"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_current_password\": ${jsonencode(var.avi_current_password)}, \"avi_password\": ${jsonencode(var.avi_password)}}"
+  content     = "{\"avi_version\": ${jsonencode(var.avi_version)}, \"avi_tenant\": ${jsonencode(var.avi_tenant)}, \"avi_current_password\": ${jsonencode(var.avi_current_password)}, \"avi_password\": ${jsonencode(var.avi_password)}, \"avi_dns_servers\": ${jsonencode(var.avi_dns_servers)}, \"avi_ntp_servers\": ${jsonencode(var.avi_ntp_servers)}}"
   filename = "../avi_config.json"
 }
 
