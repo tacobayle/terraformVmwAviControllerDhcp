@@ -3,11 +3,11 @@ resource "avi_systemconfiguration" "avi_system" {
   uuid                      = "default-uuid"
   welcome_workflow_complete = true
 
-  dynamic dns_configuration {
-    for_each = flatten(split(",", replace(var.avi_dns_servers, " ", "")))
-    content {
-      server_list {
-        addr = dns_configuration.value
+  dns_configuration {
+    dynamic server_list {
+      for_each = flatten(split(",", replace(var.avi_dns_servers, " ", "")))
+      content {
+        addr = server_list.value
         type = "V4"
       }
     }
@@ -19,13 +19,12 @@ resource "avi_systemconfiguration" "avi_system" {
     tenant_vrf                   = false
   }
 
-  dynamic ntp_configuration {
-    for_each = flatten(split(",", replace(var.avi_ntp_servers, " ", "")))
-    content {
-      ntp_servers {
-        key_number = 1
-        server {
-          addr = ntp_configuration.value
+  ntp_configuration {
+     ntp_servers {
+        dynamic server {
+          for_each = flatten(split(",", replace(var.avi_ntp_servers, " ", "")))
+          content {
+          addr = server.value
           type = "V4"
         }
       }
