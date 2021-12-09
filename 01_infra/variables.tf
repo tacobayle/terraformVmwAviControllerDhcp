@@ -69,9 +69,9 @@ variable "avi_ntp_servers" {
   default = "10.206.8.130, 10.206.8.130, 10.206.8.131"
 }
 
-variable "avi_password" {
-  default = null
-}
+//variable "avi_password" {
+//  default = null
+//}
 
 variable "avi_current_password" {
   default = "58NFaGDJm(PJH0G"

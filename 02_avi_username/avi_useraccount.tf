@@ -25,3 +25,7 @@ resource "local_file" "output_passwd_file_static" {
   content     = "{\"avi_password\": ${jsonencode(var.avi_password)}}"
   filename = "../.password.json"
 }
+
+output "debug_account" {
+  value = var.avi_password == null ? random_string.avi_password_random.result : var.avi_password
+}
