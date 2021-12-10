@@ -1,6 +1,6 @@
 resource "avi_cluster" "avi_cluster" {
   count            = (var.avi_cluster== true ? 3 : 0)
-  name = "cluster_avi_tf_${random_string.id.result}"
+  name = "cluster_avi_tf_${var.deployment_id}"
   nodes {
     ip {
       type = "V4"
