@@ -23,3 +23,12 @@ resource "avi_cluster" "avi_cluster" {
     name = "node03"
   }
 }
+
+resource "null_resource" "cluster_sanitty_check" {
+  count = (var.avi_cluster== true ? 1 : 0)
+
+  provisioner "local-exec" {
+    command = "/bin/bash ../avi_cluster_sanity_check.sh"
+  }
+}
+

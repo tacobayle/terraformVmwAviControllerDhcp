@@ -60,3 +60,4 @@ tf_init_check
 terraform apply -auto-approve -var-file=../controllers.json -var-file=../avi_config.json -var-file=../.password.json 2> apply.stderr
 tf_apply_check
 cd -
+#
