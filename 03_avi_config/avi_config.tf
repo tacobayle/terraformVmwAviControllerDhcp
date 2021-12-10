@@ -5,7 +5,7 @@ resource "avi_systemconfiguration" "avi_system" {
 
   dns_configuration {
     dynamic server_list {
-      for_each = flatten(split(",", replace(var.avi_dns_servers, " ", "")))
+      for_each = flatten(split(",", replace(var.avi_dns_server_ips, " ", "")))
       content {
         addr = server_list.value
         type = "V4"
@@ -22,7 +22,7 @@ resource "avi_systemconfiguration" "avi_system" {
   ntp_configuration {
      ntp_servers {
         dynamic server {
-          for_each = flatten(split(",", replace(var.avi_ntp_servers, " ", "")))
+          for_each = flatten(split(",", replace(var.avi_ntp_server_ips, " ", "")))
           content {
           addr = server.value
           type = "V4"

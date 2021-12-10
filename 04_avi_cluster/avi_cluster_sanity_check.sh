@@ -5,15 +5,15 @@ attempt=0
 #
 sleep 120
 #
-until $(curl --output /dev/null --silent --head -k https://$(jq -r .avi_controller_ips[0] controllers.json)); do echo 'Waiting for Avi Controllers to be ready'; sleep 10 ; done
-curl -s -k -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": '$(jq .avi_password .password.json)'}' -c avi_cookie.txt https://$(jq -r .avi_controller_ips[0] controllers.json)/login
+until $(curl --output /dev/null --silent --head -k https://$(jq -r .avi_controller_ips[0] ../controllers.json)); do echo 'Waiting for Avi Controllers to be ready'; sleep 10 ; done
+curl -s -k -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": '$(jq .avi_password ../.password.json)'}' -c avi_cookie.txt https://$(jq -r .avi_controller_ips[0] ../controllers.json)/login
 #
 attempt=0
 while [ $attempt -ne $retry ]; do
   echo "############################################################################################"
   IFS=$'\n'
   nodes_ready=0
-  for status_nodes in $(curl -s -k -X GET -H "Content-Type: application/json" -b avi_cookie.txt  https://$(jq -r .avi_controller_ips[0] controllers.json)/api/cluster/status | jq -c .node_states)
+  for status_nodes in $(curl -s -k -X GET -H "Content-Type: application/json" -b avi_cookie.txt  https://$(jq -r .avi_controller_ips[0] ../controllers.json)/api/cluster/status | jq -c .node_states)
     do
       for status_node in $(echo $status_nodes | jq  -r -c .[].state)
         do
