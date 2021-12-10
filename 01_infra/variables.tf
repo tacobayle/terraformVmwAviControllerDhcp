@@ -62,7 +62,7 @@ variable "avi_cluster" {
 }
 
 variable "avi_dns_servers" {
-    default = "10.206.8.130, 10.206.8.130, 10.206.8.131"
+    default = "8.8.8.8, 10.206.8.130, 10.206.8.131"
 }
 
 variable "avi_ntp_servers" {
