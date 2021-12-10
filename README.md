@@ -61,23 +61,20 @@ controller-21.1.2-9124.ova
   - if var.cluster is true, the Avi cluster will be configured
   - a sanity check will make sure the cluster has been configured properly  
 
-## Run TF Plan:
-- Git clone
-
+## Consume the repo:
+- git clone
 ```shell
-cd ~ ; git clone https://github.com/tacobayle/vmwAviController ; cd vmwAviController ; terraform init ;
+cd ~
+git clone https://github.com/tacobayle/tfVmwAviController
+cd tfVmwAviController
+terraform init
 ```
-
 - Change the variables.tf according to your environment
-  
-- Build the plan
-
+- Run the repo
 ```shell
-terraform apply -auto-approve
+/bin/bash apply.sh
 ```
-
-- Destroy the plan
-
+- Destroy
 ```shell
-terraform destroy -auto-approve
+/bin/bash destroy.sh
 ```
