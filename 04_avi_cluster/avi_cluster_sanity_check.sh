@@ -8,20 +8,20 @@ retry=20
 pause=30
 attempt=0
 while [ $attempt -ne $retry ]; do
-  curl_output=$(curl --output /dev/null --silent --head -k https://$(jq -r .avi_controller_ips[0] ../controllers.json) | jq .error )
-  if [[ $curl_output == "Controller is not yet ready. Please try again after a couple of minutes" ]] ; then
+  curl_output=$(curl -s -k -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": '$(jq .avi_password ../.password.json)'}' -c ../avi_cookie.txt https://$(jq -r .avi_controller_ips[0] ../controllers.json)/login | jq .version.Version )
+  if [[ $curl_output == $(jq .avi_version ../avi_config.json) ]] ; then
+    echo "controller ready"
+    break
+  else
     echo "controller not ready yet - waiting for $pause and retry"
     ((attempt++))
     sleep $pause
-  else
-    break
   fi
 done
 if [ $attempt -ge $retry ] ; then
   echo "ERROR: controller not ready after $attempt attempts"
   exit 255
 fi
-curl -s -k -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": '$(jq .avi_password ../.password.json)'}' -c ../avi_cookie.txt https://$(jq -r .avi_controller_ips[0] ../controllers.json)/login
 #
 retry=20
 pause=30
@@ -30,7 +30,7 @@ while [ $attempt -ne $retry ]; do
   echo "############################################################################################"
   IFS=$'\n'
   nodes_ready=0
-  for status_nodes in $(curl -s -k -X GET -H "Content-Type: application/json" -b avi_cookie.txt  https://$(jq -r .avi_controller_ips[0] ../controllers.json)/api/cluster/status | jq -c .node_states)
+  for status_nodes in $(curl -s -k -X GET -H "Content-Type: application/json" -b ../avi_cookie.txt  https://$(jq -r .avi_controller_ips[0] ../controllers.json)/api/cluster/status | jq -c .node_states)
     do
       for status_node in $(echo $status_nodes | jq  -r -c .[].state)
         do
