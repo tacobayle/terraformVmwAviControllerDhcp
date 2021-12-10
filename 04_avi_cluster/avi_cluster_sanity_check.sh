@@ -8,8 +8,8 @@ retry=20
 pause=30
 attempt=0
 while [ $attempt -ne $retry ]; do
-  $(curl --output /dev/null --silent --head -k https://$(jq -r .avi_controller_ips[0] ../controllers.json) | jq .error )
-  if [[ $(curl --output /dev/null --silent --head -k https://$(jq -r .avi_controller_ips[0] ../controllers.json) | jq .error ) == "Controller is not yet ready. Please try again after a couple of minutes" ]] ; then
+  curl_output=$(curl --output /dev/null --silent --head -k https://$(jq -r .avi_controller_ips[0] ../controllers.json) | jq .error )
+  if [[ $curl_output == "Controller is not yet ready. Please try again after a couple of minutes" ]] ; then
     echo "controller not ready yet - waiting for $pause and retry"
     ((attempt++))
     sleep $pause
@@ -21,7 +21,7 @@ if [ $attempt -ge $retry ] ; then
   echo "ERROR: controller not ready after $attempt attempts"
   exit 255
 fi
-curl -s -k -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": '$(jq .avi_password ../.password.json)'}' -c avi_cookie.txt https://$(jq -r .avi_controller_ips[0] ../controllers.json)/login
+curl -s -k -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": '$(jq .avi_password ../.password.json)'}' -c ../avi_cookie.txt https://$(jq -r .avi_controller_ips[0] ../controllers.json)/login
 #
 retry=20
 pause=30
