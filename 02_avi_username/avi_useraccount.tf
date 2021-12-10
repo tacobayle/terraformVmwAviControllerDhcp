@@ -11,7 +11,7 @@ resource "random_string" "avi_password_random" {
   min_upper        = 2
   min_numeric      = 2
   min_special      = 2
-  override_special = "%_&"
+  override_special = "_"
 }
 
 resource "local_file" "output_passwd_file_random" {
